@@ -1,0 +1,276 @@
+{
+  "registry_version": "1.0.0",
+  "updated_at": "2026-06-15",
+  "templates": [
+    {
+      "id": "mantenimiento_tecnico_v1",
+      "name": "Informe técnico de mantenimiento",
+      "version": "1.0.0",
+      "active": true,
+      "category": "technical_report",
+      "page": {
+        "size": "A4",
+        "orientation": "landscape",
+        "margin": "12mm"
+      },
+      "template": {
+        "sections": [
+          { "type": "cover" },
+          { "type": "fixed_text", "block_id": "texto_1" },
+          { "type": "table", "block_id": "tabla_1" },
+          { "type": "ai_text", "block_id": "texto_ia_1" },
+          { "type": "images", "block_id": "imagenes_1" }
+        ]
+      },
+      "default_data_blocks": [
+        {
+          "id": "texto_1",
+          "type": "fixed_text",
+          "title": "Objeto del informe",
+          "text": "El presente informe recoge las actuaciones técnicas realizadas sobre la instalación indicada."
+        },
+        {
+          "id": "texto_ia_1",
+          "type": "ai_text",
+          "title": "Observaciones técnicas",
+          "prompt_id": "observaciones_tecnicas",
+          "fallback_content": "No se han generado observaciones automáticas."
+        },
+        {
+          "id": "imagenes_1",
+          "type": "images",
+          "title": "Evidencias fotográficas",
+          "layout": "grid",
+          "items": []
+        }
+      ],
+      "default_assets": [],
+      "default_prompts": [
+        {
+          "id": "observaciones_tecnicas",
+          "name": "Observaciones técnicas",
+          "instructions": "Redacta observaciones técnicas breves, profesionales y prudentes a partir de los datos del informe. No inventes incidencias."
+        }
+      ],
+      "required_blocks": ["tabla_1"],
+      "required_assets": [],
+      "required_variables": ["document.id", "document.title", "document.date"],
+      "output_filename_pattern": "[[document.id]] - [[document.title]].pdf"
+    },
+    {
+      "id": "informe_consumos_v1",
+      "name": "Informe de consumos",
+      "version": "1.0.0",
+      "active": true,
+      "category": "consumption_report",
+      "page": {
+        "size": "A4",
+        "orientation": "landscape",
+        "margin": "12mm"
+      },
+      "template": {
+        "sections": [
+          { "type": "cover" },
+          {
+            "type": "heading",
+            "title": "Histórico de consumos",
+            "description": "Resumen de consumos registrados durante el periodo analizado."
+          },
+          { "type": "table", "block_id": "tabla_1" },
+          { "type": "ai_text", "block_id": "texto_ia_1" },
+          { "type": "images", "block_id": "imagenes_1" }
+        ]
+      },
+      "default_data_blocks": [
+        {
+          "id": "texto_ia_1",
+          "type": "ai_text",
+          "title": "Análisis de consumos",
+          "prompt_id": "analisis_consumos",
+          "fallback_content": "No se ha generado análisis automático de consumos."
+        },
+        {
+          "id": "imagenes_1",
+          "type": "images",
+          "title": "Gráficos o evidencias de consumo",
+          "layout": "grid",
+          "items": []
+        }
+      ],
+      "default_assets": [],
+      "default_prompts": [
+        {
+          "id": "analisis_consumos",
+          "name": "Análisis de consumos",
+          "instructions": "Analiza la evolución de consumos de forma técnica, breve y conservadora. Destaca variaciones relevantes sin inventar causas."
+        }
+      ],
+      "required_blocks": ["tabla_1"],
+      "required_assets": [],
+      "required_variables": ["document.id", "document.title", "document.date", "document.period.label"],
+      "output_filename_pattern": "[[document.id]] - Informe consumos - [[document.period.label]].pdf"
+    },
+    {
+      "id": "anexo_fotografico_v1",
+      "name": "Anexo fotográfico",
+      "version": "1.0.0",
+      "active": true,
+      "category": "photo_annex",
+      "page": {
+        "size": "A4",
+        "orientation": "portrait",
+        "margin": "14mm"
+      },
+      "template": {
+        "sections": [
+          { "type": "cover" },
+          {
+            "type": "heading",
+            "title": "Anexo fotográfico",
+            "description": "Relación de imágenes asociadas a la actuación técnica."
+          },
+          { "type": "fixed_text", "block_id": "texto_1" },
+          { "type": "images", "block_id": "imagenes_1" }
+        ]
+      },
+      "default_data_blocks": [
+        {
+          "id": "texto_1",
+          "type": "fixed_text",
+          "title": "Descripción",
+          "text": "Las siguientes imágenes documentan visualmente el estado de la instalación, equipos o trabajos realizados."
+        },
+        {
+          "id": "imagenes_1",
+          "type": "images",
+          "title": "Galería fotográfica",
+          "layout": "grid",
+          "items": []
+        }
+      ],
+      "default_assets": [],
+      "default_prompts": [],
+      "required_blocks": ["imagenes_1"],
+      "required_assets": [],
+      "required_variables": ["document.id", "document.title", "document.date"],
+      "output_filename_pattern": "[[document.id]] - Anexo fotografico.pdf"
+    },
+    {
+      "id": "informe_incidencias_v1",
+      "name": "Informe de incidencias",
+      "version": "1.0.0",
+      "active": true,
+      "category": "incident_report",
+      "page": {
+        "size": "A4",
+        "orientation": "portrait",
+        "margin": "14mm"
+      },
+      "template": {
+        "sections": [
+          { "type": "cover" },
+          {
+            "type": "heading",
+            "title": "Resumen de incidencias",
+            "description": "Listado de incidencias detectadas, estado y alcance técnico."
+          },
+          { "type": "table", "block_id": "tabla_1" },
+          { "type": "ai_text", "block_id": "texto_ia_1" },
+          { "type": "images", "block_id": "imagenes_1" }
+        ]
+      },
+      "default_data_blocks": [
+        {
+          "id": "texto_ia_1",
+          "type": "ai_text",
+          "title": "Resumen técnico",
+          "prompt_id": "resumen_incidencias",
+          "fallback_content": "No se ha generado resumen automático de incidencias."
+        },
+        {
+          "id": "imagenes_1",
+          "type": "images",
+          "title": "Imágenes asociadas",
+          "layout": "grid",
+          "items": []
+        }
+      ],
+      "default_assets": [],
+      "default_prompts": [
+        {
+          "id": "resumen_incidencias",
+          "name": "Resumen de incidencias",
+          "instructions": "Resume las incidencias de forma clara, técnica y ordenada. Indica riesgos si están reflejados en los datos. No inventes información."
+        }
+      ],
+      "required_blocks": ["tabla_1"],
+      "required_assets": [],
+      "required_variables": ["document.id", "document.title", "document.date"],
+      "output_filename_pattern": "[[document.id]] - Incidencias.pdf"
+    },
+    {
+      "id": "informe_mensual_ejecutivo_v1",
+      "name": "Informe mensual ejecutivo",
+      "version": "1.0.0",
+      "active": true,
+      "category": "monthly_executive_report",
+      "page": {
+        "size": "A4",
+        "orientation": "portrait",
+        "margin": "14mm"
+      },
+      "template": {
+        "sections": [
+          { "type": "cover" },
+          { "type": "fixed_text", "block_id": "texto_1" },
+          {
+            "type": "heading",
+            "title": "Indicadores del periodo"
+          },
+          { "type": "table", "block_id": "tabla_1" },
+          {
+            "type": "heading",
+            "title": "Actuaciones e incidencias"
+          },
+          { "type": "table", "block_id": "tabla_2" },
+          { "type": "ai_text", "block_id": "texto_ia_1" },
+          { "type": "images", "block_id": "imagenes_1" }
+        ]
+      },
+      "default_data_blocks": [
+        {
+          "id": "texto_1",
+          "type": "fixed_text",
+          "title": "Introducción",
+          "text": "Este informe resume la actividad técnica, indicadores principales e incidencias del periodo."
+        },
+        {
+          "id": "texto_ia_1",
+          "type": "ai_text",
+          "title": "Conclusión ejecutiva",
+          "prompt_id": "conclusion_mensual",
+          "fallback_content": "No se ha generado conclusión automática para este periodo."
+        },
+        {
+          "id": "imagenes_1",
+          "type": "images",
+          "title": "Anexos gráficos",
+          "layout": "grid",
+          "items": []
+        }
+      ],
+      "default_assets": [],
+      "default_prompts": [
+        {
+          "id": "conclusion_mensual",
+          "name": "Conclusión mensual",
+          "instructions": "Redacta una conclusión ejecutiva breve basada en los indicadores, actuaciones e incidencias del periodo. Mantén tono técnico y profesional."
+        }
+      ],
+      "required_blocks": ["tabla_1", "tabla_2"],
+      "required_assets": [],
+      "required_variables": ["document.id", "document.title", "document.date", "document.period.label"],
+      "output_filename_pattern": "[[document.id]] - Informe mensual - [[document.period.label]].pdf"
+    }
+  ]
+}
