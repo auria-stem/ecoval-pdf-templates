@@ -222,38 +222,167 @@
             ]
           ],
           "columns": [
-            {
-              "key": "item",
-              "label": "Equipo / contador",
-              "fallback_keys": ["equipment", "equipment_id", "contador", "meter", "zone", "name"]
-            },
-            {
-              "key": "unit",
-              "label": "Unidad",
-              "fallback_keys": ["unidad", "measurement_unit"]
-            },
-            { "key": "january", "label": "Enero", "fallback_keys": ["enero", "ene", "01"] },
-            { "key": "february", "label": "Febrero", "fallback_keys": ["febrero", "feb", "02"] },
-            { "key": "march", "label": "Marzo", "fallback_keys": ["marzo", "mar", "03"] },
-            { "key": "april", "label": "Abril", "fallback_keys": ["abril", "abr", "04"] },
-            { "key": "may", "label": "Mayo", "fallback_keys": ["mayo", "05"] },
-            { "key": "june", "label": "Junio", "fallback_keys": ["junio", "jun", "06"] },
-            { "key": "july", "label": "Julio", "fallback_keys": ["julio", "jul", "07"] },
-            { "key": "august", "label": "Agosto", "fallback_keys": ["agosto", "ago", "08"] },
-            { "key": "september", "label": "Septiembre", "fallback_keys": ["septiembre", "sep", "09"] },
-            { "key": "october", "label": "Octubre", "fallback_keys": ["octubre", "oct", "10"] },
-            { "key": "november", "label": "Noviembre", "fallback_keys": ["noviembre", "nov", "11"] },
-            { "key": "december", "label": "Diciembre", "fallback_keys": ["diciembre", "dic", "12"] },
-            { "key": "total", "label": "Total", "fallback_keys": ["total_period", "total_periodo"] },
-            {
-              "key": "observations",
-              "label": "Observaciones",
-              "fallback_keys": ["observaciones", "notes", "comments"]
-            }
-          ],
-          "rows": []
-        }
-      ],
+          {
+            "key": "item",
+            "label": "Equipo / contador",
+            "width": "13%",
+            "fallback_keys": [
+              "equipment",
+              "equipment_id",
+              "contador",
+              "meter",
+              "zone",
+              "name"
+            ]
+          },
+          {
+            "key": "unit",
+            "label": "Unidad",
+            "width": "5%",
+            "fallback_keys": [
+              "unidad",
+              "measurement_unit"
+            ]
+          },
+          {
+            "key": "january",
+            "label": "Enero",
+            "width": "5.25%",
+            "fallback_keys": [
+              "enero",
+              "ene",
+              "01"
+            ]
+          },
+          {
+            "key": "february",
+            "label": "Febrero",
+            "width": "5.25%",
+            "fallback_keys": [
+              "febrero",
+              "feb",
+              "02"
+            ]
+          },
+          {
+            "key": "march",
+            "label": "Marzo",
+            "width": "5.25%",
+            "fallback_keys": [
+              "marzo",
+              "mar",
+              "03"
+            ]
+          },
+          {
+            "key": "april",
+            "label": "Abril",
+            "width": "5.25%",
+            "fallback_keys": [
+              "abril",
+              "abr",
+              "04"
+            ]
+          },
+          {
+            "key": "may",
+            "label": "Mayo",
+            "width": "5.25%",
+            "fallback_keys": [
+              "mayo",
+              "05"
+            ]
+          },
+          {
+            "key": "june",
+            "label": "Junio",
+            "width": "5.25%",
+            "fallback_keys": [
+              "junio",
+              "jun",
+              "06"
+            ]
+          },
+          {
+            "key": "july",
+            "label": "Julio",
+            "width": "5.25%",
+            "fallback_keys": [
+              "julio",
+              "jul",
+              "07"
+            ]
+          },
+          {
+            "key": "august",
+            "label": "Agosto",
+            "width": "5.25%",
+            "fallback_keys": [
+              "agosto",
+              "ago",
+              "08"
+            ]
+          },
+          {
+            "key": "september",
+            "label": "Septiembre",
+            "width": "5.25%",
+            "fallback_keys": [
+              "septiembre",
+              "sep",
+              "09"
+            ]
+          },
+          {
+            "key": "october",
+            "label": "Octubre",
+            "width": "5.25%",
+            "fallback_keys": [
+              "octubre",
+              "oct",
+              "10"
+            ]
+          },
+          {
+            "key": "november",
+            "label": "Noviembre",
+            "width": "5.25%",
+            "fallback_keys": [
+              "noviembre",
+              "nov",
+              "11"
+            ]
+          },
+          {
+            "key": "december",
+            "label": "Diciembre",
+            "width": "5.25%",
+            "fallback_keys": [
+              "diciembre",
+              "dic",
+              "12"
+            ]
+          },
+          {
+            "key": "total",
+            "label": "Total",
+            "width": "6%",
+            "fallback_keys": [
+              "total_period",
+              "total_periodo"
+            ]
+          },
+          {
+            "key": "observations",
+            "label": "Observaciones",
+            "width": "13%",
+            "fallback_keys": [
+              "observaciones",
+              "notes",
+              "comments"
+            ]
+          }
+        ],
       "default_assets": [],
       "default_prompts": [
         {
