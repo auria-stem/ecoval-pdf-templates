@@ -17,9 +17,27 @@
         "sections": [
           { "type": "cover" },
           { "type": "fixed_text", "block_id": "texto_1" },
-          { "type": "table", "block_id": "tabla_1" },
+          {
+            "type": "table",
+            "block_id": "tabla_1",
+            "dataset_id": "maintenance_inspection"
+          },
           { "type": "ai_text", "block_id": "texto_ia_1" },
-          { "type": "images", "block_id": "imagenes_1" }
+          {
+            "type": "images",
+            "block_id": "imagenes_1",
+            "dataset_id": "photo_evidence"
+          },
+          { "type": "page_break" },
+          {
+            "type": "heading",
+            "title": "Histórico y datos complementarios"
+          },
+          {
+            "type": "table",
+            "block_id": "tabla_2",
+            "dataset_id": "thermal_consumption"
+          }
         ]
       },
       "default_data_blocks": [
