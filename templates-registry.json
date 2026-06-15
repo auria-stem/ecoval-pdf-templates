@@ -1,11 +1,16 @@
 {
-  "registry_version": "1.0.0",
+  "registry_version": "1.1.0",
   "updated_at": "2026-06-15",
+  "schema_notes": {
+    "template_sections_purpose": "Defines only render order and structural sections.",
+    "block_definitions_purpose": "Defines all renderable blocks, their data bindings and visual configuration.",
+    "datasets_purpose": "Datasets contain normalized business data only, without presentation configuration."
+  },
   "templates": [
     {
       "id": "mantenimiento_tecnico_v1",
       "name": "Informe técnico de mantenimiento",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "active": true,
       "category": "technical_report",
       "page": {
@@ -16,31 +21,19 @@
       "template": {
         "sections": [
           { "type": "cover" },
-          { "type": "fixed_text", "block_id": "texto_1" },
-          {
-            "type": "table",
-            "block_id": "tabla_1",
-            "dataset_id": "maintenance_inspection"
-          },
-          { "type": "ai_text", "block_id": "texto_ia_1" },
-          {
-            "type": "images",
-            "block_id": "imagenes_1",
-            "dataset_id": "photo_evidence"
-          },
+          { "type": "block", "block_id": "texto_1" },
+          { "type": "block", "block_id": "tabla_1" },
+          { "type": "block", "block_id": "texto_ia_1" },
+          { "type": "block", "block_id": "imagenes_1" },
           { "type": "page_break" },
           {
             "type": "heading",
             "title": "Histórico y datos complementarios"
           },
-          {
-            "type": "table",
-            "block_id": "tabla_2",
-            "dataset_id": "thermal_consumption"
-          }
+          { "type": "block", "block_id": "tabla_2" }
         ]
       },
-      "default_data_blocks": [
+      "block_definitions": [
         {
           "id": "texto_1",
           "type": "fixed_text",
@@ -48,18 +41,214 @@
           "text": "El presente informe recoge las actuaciones técnicas realizadas sobre la instalación indicada."
         },
         {
+          "id": "tabla_1",
+          "type": "table",
+          "title": "Revisión técnica",
+          "dataset_id": "maintenance_inspection",
+          "rows_path": "rows",
+          "table_mode": "complex",
+          "table_style": "inspection",
+          "empty_state": "No hay datos de revisión técnica disponibles.",
+          "header_rows": [
+            [
+              {
+                "label": "Nombre y apellidos",
+                "colspan": 1,
+                "class": "hdr-info"
+              },
+              {
+                "label": "[[technician.name]]",
+                "colspan": 3,
+                "class": "hdr-info-value"
+              },
+              {
+                "label": "FIRMADO",
+                "colspan": 1,
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "image_asset_id": "firma_tecnico",
+                "colspan": 1,
+                "rowspan": 2,
+                "class": "hdr-signature-img",
+                "fallback_text": "FIRMADO"
+              }
+            ],
+            [
+              {
+                "label": "Nº de carnet RITE",
+                "colspan": 1,
+                "class": "hdr-info"
+              },
+              {
+                "label": "[[technician.rite_card]]",
+                "colspan": 3,
+                "class": "hdr-info-value"
+              }
+            ],
+            [
+              {
+                "label": "Detalle de comprobaciones realizadas",
+                "colspan": 6,
+                "class": "hdr-section"
+              }
+            ]
+          ],
+          "columns": [
+            {
+              "key": "check_date",
+              "label": "FECHA",
+              "fallback_keys": ["date", "fecha", "inspection_date"],
+              "class": "col-date"
+            },
+            {
+              "key": "equipment",
+              "label": "EQUIPO / INSTALACIÓN",
+              "fallback_keys": ["equipment_id", "equipment_name", "equipo", "name", "system", "zone"],
+              "class": "col-equipment"
+            },
+            {
+              "key": "task",
+              "label": "ACTUACIÓN",
+              "fallback_keys": ["revision", "check", "description", "descripcion", "operation"],
+              "class": "col-task"
+            },
+            {
+              "key": "periodicity",
+              "label": "PERIODICIDAD",
+              "fallback_keys": ["periodicidad", "frequency"],
+              "class": "col-periodicity"
+            },
+            {
+              "key": "status",
+              "label": "ESTADO",
+              "fallback_keys": ["estado", "result", "resultado"],
+              "class": "col-status",
+              "class_map": {
+                "CORRECTO": "cell-ok",
+                "OK": "cell-ok",
+                "APTO": "cell-ok",
+                "CORR. CON OBSERVACIONES": "cell-warn",
+                "CON OBSERVACIONES": "cell-warn",
+                "INCIDENCIA": "cell-warn",
+                "ERROR": "cell-error",
+                "NO APTO": "cell-error",
+                "NO APLICA": "cell-na",
+                "N/A": "cell-na"
+              }
+            },
+            {
+              "key": "observations",
+              "label": "OBSERVACIONES",
+              "fallback_keys": ["observaciones", "notes", "comments", "comentarios"],
+              "class": "col-observations"
+            }
+          ],
+          "rows": []
+        },
+        {
           "id": "texto_ia_1",
           "type": "ai_text",
           "title": "Observaciones técnicas",
           "prompt_id": "observaciones_tecnicas",
+          "context_dataset_ids": ["maintenance_inspection", "thermal_consumption"],
+          "include_document_context": true,
           "fallback_content": "No se han generado observaciones automáticas."
         },
         {
           "id": "imagenes_1",
           "type": "images",
           "title": "Evidencias fotográficas",
+          "dataset_id": "photo_evidence",
+          "items_path": "items",
           "layout": "grid",
-          "items": []
+          "items": [],
+          "empty_state": "No hay evidencias fotográficas disponibles."
+        },
+        {
+          "id": "tabla_2",
+          "type": "table",
+          "title": "Histórico de consumos",
+          "dataset_id": "thermal_consumption",
+          "rows_path": "rows",
+          "table_mode": "complex",
+          "table_style": "wide",
+          "empty_state": "No hay datos de consumo disponibles.",
+          "header_rows": [
+            [
+              {
+                "label": "Equipo / contador",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "Unidad",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "[[document.period.year]]",
+                "colspan": 12,
+                "class": "hdr-section"
+              },
+              {
+                "label": "Total",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "Observaciones",
+                "rowspan": 2,
+                "class": "hdr-info"
+              }
+            ],
+            [
+              { "label": "Enero", "class": "hdr-month" },
+              { "label": "Febrero", "class": "hdr-month" },
+              { "label": "Marzo", "class": "hdr-month" },
+              { "label": "Abril", "class": "hdr-month" },
+              { "label": "Mayo", "class": "hdr-month" },
+              { "label": "Junio", "class": "hdr-month" },
+              { "label": "Julio", "class": "hdr-month" },
+              { "label": "Agosto", "class": "hdr-month" },
+              { "label": "Septiembre", "class": "hdr-month" },
+              { "label": "Octubre", "class": "hdr-month" },
+              { "label": "Noviembre", "class": "hdr-month" },
+              { "label": "Diciembre", "class": "hdr-month" }
+            ]
+          ],
+          "columns": [
+            {
+              "key": "item",
+              "label": "Equipo / contador",
+              "fallback_keys": ["equipment", "equipment_id", "contador", "meter", "zone", "name"]
+            },
+            {
+              "key": "unit",
+              "label": "Unidad",
+              "fallback_keys": ["unidad", "measurement_unit"]
+            },
+            { "key": "january", "label": "Enero", "fallback_keys": ["enero", "ene", "01"] },
+            { "key": "february", "label": "Febrero", "fallback_keys": ["febrero", "feb", "02"] },
+            { "key": "march", "label": "Marzo", "fallback_keys": ["marzo", "mar", "03"] },
+            { "key": "april", "label": "Abril", "fallback_keys": ["abril", "abr", "04"] },
+            { "key": "may", "label": "Mayo", "fallback_keys": ["mayo", "05"] },
+            { "key": "june", "label": "Junio", "fallback_keys": ["junio", "jun", "06"] },
+            { "key": "july", "label": "Julio", "fallback_keys": ["julio", "jul", "07"] },
+            { "key": "august", "label": "Agosto", "fallback_keys": ["agosto", "ago", "08"] },
+            { "key": "september", "label": "Septiembre", "fallback_keys": ["septiembre", "sep", "09"] },
+            { "key": "october", "label": "Octubre", "fallback_keys": ["octubre", "oct", "10"] },
+            { "key": "november", "label": "Noviembre", "fallback_keys": ["noviembre", "nov", "11"] },
+            { "key": "december", "label": "Diciembre", "fallback_keys": ["diciembre", "dic", "12"] },
+            { "key": "total", "label": "Total", "fallback_keys": ["total_period", "total_periodo"] },
+            {
+              "key": "observations",
+              "label": "Observaciones",
+              "fallback_keys": ["observaciones", "notes", "comments"]
+            }
+          ],
+          "rows": []
         }
       ],
       "default_assets": [],
@@ -67,9 +256,18 @@
         {
           "id": "observaciones_tecnicas",
           "name": "Observaciones técnicas",
-          "instructions": "Redacta observaciones técnicas breves, profesionales y prudentes a partir de los datos del informe. No inventes incidencias."
+          "instructions": "Redacta observaciones técnicas breves, profesionales y prudentes a partir de los datos del informe. No inventes incidencias. Si no hay datos suficientes, indícalo de forma neutra.",
+          "output_type": "plain_text",
+          "max_paragraphs": 3,
+          "fallback_content": "No se han generado observaciones automáticas."
         }
       ],
+      "dataset_requirements": [
+        { "id": "maintenance_inspection", "required": true },
+        { "id": "thermal_consumption", "required": false },
+        { "id": "photo_evidence", "required": false }
+      ],
+      "required_datasets": ["maintenance_inspection"],
       "required_blocks": ["tabla_1"],
       "required_assets": [],
       "required_variables": ["document.id", "document.title", "document.date"],
@@ -78,7 +276,7 @@
     {
       "id": "informe_consumos_v1",
       "name": "Informe de consumos",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "active": true,
       "category": "consumption_report",
       "page": {
@@ -94,25 +292,114 @@
             "title": "Histórico de consumos",
             "description": "Resumen de consumos registrados durante el periodo analizado."
           },
-          { "type": "table", "block_id": "tabla_1" },
-          { "type": "ai_text", "block_id": "texto_ia_1" },
-          { "type": "images", "block_id": "imagenes_1" }
+          { "type": "block", "block_id": "tabla_1" },
+          { "type": "block", "block_id": "texto_ia_1" },
+          { "type": "block", "block_id": "imagenes_1" }
         ]
       },
-      "default_data_blocks": [
+      "block_definitions": [
+        {
+          "id": "tabla_1",
+          "type": "table",
+          "title": "Histórico de consumos",
+          "dataset_id": "thermal_consumption",
+          "rows_path": "rows",
+          "table_mode": "complex",
+          "table_style": "wide",
+          "empty_state": "No hay datos de consumo disponibles para el periodo seleccionado.",
+          "header_rows": [
+            [
+              {
+                "label": "Equipo / contador",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "Unidad",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "[[document.period.year]]",
+                "colspan": 12,
+                "class": "hdr-section"
+              },
+              {
+                "label": "Total",
+                "rowspan": 2,
+                "class": "hdr-info"
+              },
+              {
+                "label": "Observaciones",
+                "rowspan": 2,
+                "class": "hdr-info"
+              }
+            ],
+            [
+              { "label": "Enero", "class": "hdr-month" },
+              { "label": "Febrero", "class": "hdr-month" },
+              { "label": "Marzo", "class": "hdr-month" },
+              { "label": "Abril", "class": "hdr-month" },
+              { "label": "Mayo", "class": "hdr-month" },
+              { "label": "Junio", "class": "hdr-month" },
+              { "label": "Julio", "class": "hdr-month" },
+              { "label": "Agosto", "class": "hdr-month" },
+              { "label": "Septiembre", "class": "hdr-month" },
+              { "label": "Octubre", "class": "hdr-month" },
+              { "label": "Noviembre", "class": "hdr-month" },
+              { "label": "Diciembre", "class": "hdr-month" }
+            ]
+          ],
+          "columns": [
+            {
+              "key": "item",
+              "label": "Equipo / contador",
+              "fallback_keys": ["equipment", "equipment_id", "contador", "meter", "zone", "name"]
+            },
+            {
+              "key": "unit",
+              "label": "Unidad",
+              "fallback_keys": ["unidad", "measurement_unit"]
+            },
+            { "key": "january", "label": "Enero", "fallback_keys": ["enero", "ene", "01"] },
+            { "key": "february", "label": "Febrero", "fallback_keys": ["febrero", "feb", "02"] },
+            { "key": "march", "label": "Marzo", "fallback_keys": ["marzo", "mar", "03"] },
+            { "key": "april", "label": "Abril", "fallback_keys": ["abril", "abr", "04"] },
+            { "key": "may", "label": "Mayo", "fallback_keys": ["mayo", "05"] },
+            { "key": "june", "label": "Junio", "fallback_keys": ["junio", "jun", "06"] },
+            { "key": "july", "label": "Julio", "fallback_keys": ["julio", "jul", "07"] },
+            { "key": "august", "label": "Agosto", "fallback_keys": ["agosto", "ago", "08"] },
+            { "key": "september", "label": "Septiembre", "fallback_keys": ["septiembre", "sep", "09"] },
+            { "key": "october", "label": "Octubre", "fallback_keys": ["octubre", "oct", "10"] },
+            { "key": "november", "label": "Noviembre", "fallback_keys": ["noviembre", "nov", "11"] },
+            { "key": "december", "label": "Diciembre", "fallback_keys": ["diciembre", "dic", "12"] },
+            { "key": "total", "label": "Total", "fallback_keys": ["total_period", "total_periodo"] },
+            {
+              "key": "observations",
+              "label": "Observaciones",
+              "fallback_keys": ["observaciones", "notes", "comments"]
+            }
+          ],
+          "rows": []
+        },
         {
           "id": "texto_ia_1",
           "type": "ai_text",
           "title": "Análisis de consumos",
           "prompt_id": "analisis_consumos",
+          "context_dataset_ids": ["thermal_consumption"],
+          "include_document_context": true,
           "fallback_content": "No se ha generado análisis automático de consumos."
         },
         {
           "id": "imagenes_1",
           "type": "images",
           "title": "Gráficos o evidencias de consumo",
+          "dataset_id": "consumption_evidence",
+          "items_path": "items",
           "layout": "grid",
-          "items": []
+          "items": [],
+          "empty_state": "No hay gráficos o evidencias de consumo disponibles."
         }
       ],
       "default_assets": [],
@@ -120,9 +407,17 @@
         {
           "id": "analisis_consumos",
           "name": "Análisis de consumos",
-          "instructions": "Analiza la evolución de consumos de forma técnica, breve y conservadora. Destaca variaciones relevantes sin inventar causas."
+          "instructions": "Analiza la evolución de consumos de forma técnica, breve y conservadora. Destaca variaciones relevantes sin inventar causas. Si faltan datos comparativos, indícalo de forma prudente.",
+          "output_type": "plain_text",
+          "max_paragraphs": 3,
+          "fallback_content": "No se ha generado análisis automático de consumos."
         }
       ],
+      "dataset_requirements": [
+        { "id": "thermal_consumption", "required": true },
+        { "id": "consumption_evidence", "required": false }
+      ],
+      "required_datasets": ["thermal_consumption"],
       "required_blocks": ["tabla_1"],
       "required_assets": [],
       "required_variables": ["document.id", "document.title", "document.date", "document.period.label"],
@@ -131,7 +426,7 @@
     {
       "id": "anexo_fotografico_v1",
       "name": "Anexo fotográfico",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "active": true,
       "category": "photo_annex",
       "page": {
@@ -147,11 +442,11 @@
             "title": "Anexo fotográfico",
             "description": "Relación de imágenes asociadas a la actuación técnica."
           },
-          { "type": "fixed_text", "block_id": "texto_1" },
-          { "type": "images", "block_id": "imagenes_1" }
+          { "type": "block", "block_id": "texto_1" },
+          { "type": "block", "block_id": "imagenes_1" }
         ]
       },
-      "default_data_blocks": [
+      "block_definitions": [
         {
           "id": "texto_1",
           "type": "fixed_text",
@@ -162,12 +457,19 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Galería fotográfica",
+          "dataset_id": "photo_evidence",
+          "items_path": "items",
           "layout": "grid",
-          "items": []
+          "items": [],
+          "empty_state": "No hay imágenes disponibles para este anexo."
         }
       ],
       "default_assets": [],
       "default_prompts": [],
+      "dataset_requirements": [
+        { "id": "photo_evidence", "required": true }
+      ],
+      "required_datasets": ["photo_evidence"],
       "required_blocks": ["imagenes_1"],
       "required_assets": [],
       "required_variables": ["document.id", "document.title", "document.date"],
@@ -176,7 +478,7 @@
     {
       "id": "informe_incidencias_v1",
       "name": "Informe de incidencias",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "active": true,
       "category": "incident_report",
       "page": {
@@ -192,25 +494,94 @@
             "title": "Resumen de incidencias",
             "description": "Listado de incidencias detectadas, estado y alcance técnico."
           },
-          { "type": "table", "block_id": "tabla_1" },
-          { "type": "ai_text", "block_id": "texto_ia_1" },
-          { "type": "images", "block_id": "imagenes_1" }
+          { "type": "block", "block_id": "tabla_1" },
+          { "type": "block", "block_id": "texto_ia_1" },
+          { "type": "block", "block_id": "imagenes_1" }
         ]
       },
-      "default_data_blocks": [
+      "block_definitions": [
+        {
+          "id": "tabla_1",
+          "type": "table",
+          "title": "Incidencias detectadas",
+          "dataset_id": "incidents",
+          "rows_path": "rows",
+          "table_mode": "simple",
+          "table_style": "compact",
+          "empty_state": "No hay incidencias registradas.",
+          "header_rows": [],
+          "columns": [
+            {
+              "key": "incident_id",
+              "label": "Nº incidencia",
+              "fallback_keys": ["id", "codigo", "code", "ticket_id"]
+            },
+            {
+              "key": "date",
+              "label": "Fecha",
+              "fallback_keys": ["fecha", "created_at", "reported_at"]
+            },
+            {
+              "key": "detail",
+              "label": "Detalle",
+              "fallback_keys": ["detalle", "description", "descripcion", "summary"]
+            },
+            {
+              "key": "scope",
+              "label": "Alcance",
+              "fallback_keys": ["alcance", "area", "system", "equipment"]
+            },
+            {
+              "key": "priority",
+              "label": "Prioridad",
+              "fallback_keys": ["prioridad", "criticality", "criticidad"],
+              "class_map": {
+                "BAJA": "cell-ok",
+                "MEDIA": "cell-warn",
+                "ALTA": "cell-error",
+                "CRÍTICA": "cell-error",
+                "CRITICA": "cell-error"
+              }
+            },
+            {
+              "key": "status",
+              "label": "Estado",
+              "fallback_keys": ["estado", "state"],
+              "class_map": {
+                "ABIERTA": "cell-warn",
+                "PENDIENTE": "cell-warn",
+                "EN CURSO": "cell-warn",
+                "RESUELTA": "cell-ok",
+                "CERRADA": "cell-ok",
+                "CANCELADA": "cell-na"
+              }
+            },
+            {
+              "key": "action",
+              "label": "Actuación / recomendación",
+              "fallback_keys": ["actuacion", "recommendation", "recomendacion", "next_action"]
+            }
+          ],
+          "rows": []
+        },
         {
           "id": "texto_ia_1",
           "type": "ai_text",
           "title": "Resumen técnico",
           "prompt_id": "resumen_incidencias",
+          "context_dataset_ids": ["incidents"],
+          "include_document_context": true,
           "fallback_content": "No se ha generado resumen automático de incidencias."
         },
         {
           "id": "imagenes_1",
           "type": "images",
           "title": "Imágenes asociadas",
+          "dataset_id": "incident_evidence",
+          "items_path": "items",
           "layout": "grid",
-          "items": []
+          "items": [],
+          "empty_state": "No hay imágenes asociadas a las incidencias."
         }
       ],
       "default_assets": [],
@@ -218,9 +589,17 @@
         {
           "id": "resumen_incidencias",
           "name": "Resumen de incidencias",
-          "instructions": "Resume las incidencias de forma clara, técnica y ordenada. Indica riesgos si están reflejados en los datos. No inventes información."
+          "instructions": "Resume las incidencias de forma clara, técnica y ordenada. Indica riesgos sólo si están reflejados en los datos. No inventes información ni causas no documentadas.",
+          "output_type": "plain_text",
+          "max_paragraphs": 3,
+          "fallback_content": "No se ha generado resumen automático de incidencias."
         }
       ],
+      "dataset_requirements": [
+        { "id": "incidents", "required": true },
+        { "id": "incident_evidence", "required": false }
+      ],
+      "required_datasets": ["incidents"],
       "required_blocks": ["tabla_1"],
       "required_assets": [],
       "required_variables": ["document.id", "document.title", "document.date"],
@@ -229,7 +608,7 @@
     {
       "id": "informe_mensual_ejecutivo_v1",
       "name": "Informe mensual ejecutivo",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "active": true,
       "category": "monthly_executive_report",
       "page": {
@@ -240,22 +619,22 @@
       "template": {
         "sections": [
           { "type": "cover" },
-          { "type": "fixed_text", "block_id": "texto_1" },
+          { "type": "block", "block_id": "texto_1" },
           {
             "type": "heading",
             "title": "Indicadores del periodo"
           },
-          { "type": "table", "block_id": "tabla_1" },
+          { "type": "block", "block_id": "tabla_1" },
           {
             "type": "heading",
             "title": "Actuaciones e incidencias"
           },
-          { "type": "table", "block_id": "tabla_2" },
-          { "type": "ai_text", "block_id": "texto_ia_1" },
-          { "type": "images", "block_id": "imagenes_1" }
+          { "type": "block", "block_id": "tabla_2" },
+          { "type": "block", "block_id": "texto_ia_1" },
+          { "type": "block", "block_id": "imagenes_1" }
         ]
       },
-      "default_data_blocks": [
+      "block_definitions": [
         {
           "id": "texto_1",
           "type": "fixed_text",
@@ -263,18 +642,128 @@
           "text": "Este informe resume la actividad técnica, indicadores principales e incidencias del periodo."
         },
         {
+          "id": "tabla_1",
+          "type": "table",
+          "title": "Indicadores del periodo",
+          "dataset_id": "period_indicators",
+          "rows_path": "rows",
+          "table_mode": "simple",
+          "table_style": "standard",
+          "empty_state": "No hay indicadores disponibles para el periodo seleccionado.",
+          "header_rows": [],
+          "columns": [
+            {
+              "key": "indicator",
+              "label": "Indicador",
+              "fallback_keys": ["indicador", "name", "metric"]
+            },
+            {
+              "key": "value",
+              "label": "Valor",
+              "fallback_keys": ["valor", "amount", "count"]
+            },
+            {
+              "key": "unit",
+              "label": "Unidad",
+              "fallback_keys": ["unidad", "measurement_unit"]
+            },
+            {
+              "key": "target",
+              "label": "Objetivo / referencia",
+              "fallback_keys": ["objetivo", "reference", "baseline"]
+            },
+            {
+              "key": "status",
+              "label": "Estado",
+              "fallback_keys": ["estado", "result", "resultado"],
+              "class_map": {
+                "CORRECTO": "cell-ok",
+                "OK": "cell-ok",
+                "EN OBJETIVO": "cell-ok",
+                "DESVIACIÓN": "cell-warn",
+                "DESVIACION": "cell-warn",
+                "ALERTA": "cell-warn",
+                "CRÍTICO": "cell-error",
+                "CRITICO": "cell-error",
+                "NO APLICA": "cell-na",
+                "N/A": "cell-na"
+              }
+            }
+          ],
+          "rows": []
+        },
+        {
+          "id": "tabla_2",
+          "type": "table",
+          "title": "Actuaciones e incidencias",
+          "dataset_id": "monthly_activity_incidents",
+          "rows_path": "rows",
+          "table_mode": "simple",
+          "table_style": "compact",
+          "empty_state": "No hay actuaciones o incidencias disponibles para el periodo seleccionado.",
+          "header_rows": [],
+          "columns": [
+            {
+              "key": "date",
+              "label": "Fecha",
+              "fallback_keys": ["fecha", "created_at", "reported_at"]
+            },
+            {
+              "key": "type",
+              "label": "Tipo",
+              "fallback_keys": ["tipo", "category", "categoria"]
+            },
+            {
+              "key": "description",
+              "label": "Descripción",
+              "fallback_keys": ["descripcion", "detalle", "detail", "summary"]
+            },
+            {
+              "key": "scope",
+              "label": "Alcance",
+              "fallback_keys": ["alcance", "area", "system", "equipment"]
+            },
+            {
+              "key": "status",
+              "label": "Estado",
+              "fallback_keys": ["estado", "state", "result"],
+              "class_map": {
+                "PLANIFICADA": "cell-na",
+                "REALIZADA": "cell-ok",
+                "RESUELTA": "cell-ok",
+                "ABIERTA": "cell-warn",
+                "PENDIENTE": "cell-warn",
+                "EN CURSO": "cell-warn",
+                "CRÍTICA": "cell-error",
+                "CRITICA": "cell-error"
+              }
+            },
+            {
+              "key": "observations",
+              "label": "Observaciones",
+              "fallback_keys": ["observaciones", "notes", "comments"]
+            }
+          ],
+          "rows": []
+        },
+        {
           "id": "texto_ia_1",
           "type": "ai_text",
           "title": "Conclusión ejecutiva",
           "prompt_id": "conclusion_mensual",
+          "context_dataset_ids": ["period_indicators", "monthly_activity_incidents"],
+          "include_document_context": true,
           "fallback_content": "No se ha generado conclusión automática para este periodo."
         },
         {
           "id": "imagenes_1",
           "type": "images",
           "title": "Anexos gráficos",
+          "dataset_id": "monthly_evidence",
+          "items_path": "items",
           "layout": "grid",
-          "items": []
+          "items": [],
+          "empty_state": "No hay anexos gráficos disponibles para este periodo."
         }
       ],
       "default_assets": [],
@@ -282,9 +771,18 @@
         {
           "id": "conclusion_mensual",
           "name": "Conclusión mensual",
-          "instructions": "Redacta una conclusión ejecutiva breve basada en los indicadores, actuaciones e incidencias del periodo. Mantén tono técnico y profesional."
+          "instructions": "Redacta una conclusión ejecutiva breve basada en los indicadores, actuaciones e incidencias del periodo. Mantén tono técnico y profesional. No inventes causas ni resultados que no estén en los datos.",
+          "output_type": "plain_text",
+          "max_paragraphs": 3,
+          "fallback_content": "No se ha generado conclusión automática para este periodo."
         }
       ],
+      "dataset_requirements": [
+        { "id": "period_indicators", "required": true },
+        { "id": "monthly_activity_incidents", "required": true },
+        { "id": "monthly_evidence", "required": false }
+      ],
+      "required_datasets": ["period_indicators", "monthly_activity_incidents"],
       "required_blocks": ["tabla_1", "tabla_2"],
       "required_assets": [],
       "required_variables": ["document.id", "document.title", "document.date", "document.period.label"],
