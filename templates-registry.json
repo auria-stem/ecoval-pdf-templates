@@ -19,6 +19,9 @@
         "margin": "12mm"
       },
       "template": {
+        "cover": {
+          "kicker": "Informe técnico de mantenimiento"
+        },
         "sections": [
           { "type": "cover" },
           { "type": "block", "block_id": "texto_1" },
