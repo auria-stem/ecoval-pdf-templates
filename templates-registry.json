@@ -259,7 +259,7 @@
         {
           "id": "observaciones_tecnicas",
           "name": "Observaciones técnicas",
-          "instructions": "Redacta observaciones técnicas breves, profesionales y prudentes a partir de los datos del informe. No inventes incidencias. Si no hay datos suficientes, indícalo de forma neutra.",
+          "instructions": "Redacta observaciones técnicas breves, profesionales y prudentes a partir de los datos del informe. No inventes incidencias, causas, riesgos, garantías ni conclusiones que no estén reflejadas explícitamente en los datos. No afirmes que un equipo es seguro, eficiente, conforme o apto salvo que los datos lo indiquen literalmente. Si hay variaciones o ausencia de datos, descríbelas sin atribuir causas no verificadas.",
           "output_type": "plain_text",
           "max_paragraphs": 3,
           "fallback_content": "No se han generado observaciones automáticas."
