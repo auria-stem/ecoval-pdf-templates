@@ -1,10 +1,11 @@
 {
   "registry_version": "1.1.0",
-  "updated_at": "2026-06-15",
+  "updated_at": "2026-06-16",
   "schema_notes": {
     "template_sections_purpose": "Defines only render order and structural sections.",
     "block_definitions_purpose": "Defines all renderable blocks, their data bindings and visual configuration.",
-    "datasets_purpose": "Datasets contain normalized business data only, without presentation configuration."
+    "datasets_purpose": "Datasets contain normalized business data only, without presentation configuration.",
+    "dataset_id_strategy": "Los dataset_id son genéricos dentro de cada plantilla: dataset_1, dataset_2, dataset_3. El significado de cada dataset se documenta en dataset_requirements.purpose y source_key."
   },
   "templates": [
     {
@@ -66,7 +67,7 @@
           "id": "tabla_1",
           "type": "table",
           "title": "Revisión técnica",
-          "dataset_id": "maintenance_inspection",
+          "dataset_id": "dataset_1",
           "rows_path": "rows",
           "table_mode": "complex",
           "table_style": "inspection",
@@ -204,8 +205,8 @@
           "title": "Observaciones técnicas",
           "prompt_id": "observaciones_tecnicas",
           "context_dataset_ids": [
-            "maintenance_inspection",
-            "thermal_consumption"
+            "dataset_1",
+            "dataset_2"
           ],
           "include_document_context": true,
           "fallback_content": "No se han generado observaciones automáticas."
@@ -214,7 +215,7 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Evidencias fotográficas",
-          "dataset_id": "photo_evidence",
+          "dataset_id": "dataset_3",
           "items_path": "items",
           "layout": "grid",
           "items": [],
@@ -224,7 +225,7 @@
           "id": "tabla_2",
           "type": "table",
           "title": "Histórico de consumos",
-          "dataset_id": "thermal_consumption",
+          "dataset_id": "dataset_2",
           "rows_path": "rows",
           "table_mode": "complex",
           "table_style": "wide",
@@ -486,20 +487,29 @@
       ],
       "dataset_requirements": [
         {
-          "id": "maintenance_inspection",
-          "required": true
+          "id": "dataset_1",
+          "required": true,
+          "purpose": "Datos principales de revisión técnica o comprobaciones realizadas.",
+          "source_key": "maintenance_inspection",
+          "shape": "table_rows"
         },
         {
-          "id": "thermal_consumption",
-          "required": false
+          "id": "dataset_2",
+          "required": false,
+          "purpose": "Histórico de datos complementarios del periodo.",
+          "source_key": "thermal_consumption",
+          "shape": "table_rows"
         },
         {
-          "id": "photo_evidence",
-          "required": false
+          "id": "dataset_3",
+          "required": false,
+          "purpose": "Evidencias fotográficas asociadas al informe.",
+          "source_key": "photo_evidence",
+          "shape": "image_items"
         }
       ],
       "required_datasets": [
-        "maintenance_inspection"
+        "dataset_1"
       ],
       "required_blocks": [
         "tabla_1"
@@ -555,7 +565,7 @@
           "id": "tabla_1",
           "type": "table",
           "title": "Histórico de consumos",
-          "dataset_id": "thermal_consumption",
+          "dataset_id": "dataset_1",
           "rows_path": "rows",
           "table_mode": "complex",
           "table_style": "wide",
@@ -809,7 +819,7 @@
           "title": "Análisis de consumos",
           "prompt_id": "analisis_consumos",
           "context_dataset_ids": [
-            "thermal_consumption"
+            "dataset_1"
           ],
           "include_document_context": true,
           "fallback_content": "No se ha generado análisis automático de consumos."
@@ -818,7 +828,7 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Gráficos o evidencias de consumo",
-          "dataset_id": "consumption_evidence",
+          "dataset_id": "dataset_2",
           "items_path": "items",
           "layout": "grid",
           "items": [],
@@ -838,16 +848,22 @@
       ],
       "dataset_requirements": [
         {
-          "id": "thermal_consumption",
-          "required": true
+          "id": "dataset_1",
+          "required": true,
+          "purpose": "Datos tabulares principales del histórico o serie del periodo.",
+          "source_key": "thermal_consumption",
+          "shape": "table_rows"
         },
         {
-          "id": "consumption_evidence",
-          "required": false
+          "id": "dataset_2",
+          "required": false,
+          "purpose": "Evidencias, gráficos o imágenes asociados al histórico del periodo.",
+          "source_key": "consumption_evidence",
+          "shape": "image_items"
         }
       ],
       "required_datasets": [
-        "thermal_consumption"
+        "dataset_1"
       ],
       "required_blocks": [
         "tabla_1"
@@ -906,7 +922,7 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Galería fotográfica",
-          "dataset_id": "photo_evidence",
+          "dataset_id": "dataset_1",
           "items_path": "items",
           "layout": "grid",
           "items": [],
@@ -917,12 +933,15 @@
       "default_prompts": [],
       "dataset_requirements": [
         {
-          "id": "photo_evidence",
-          "required": true
+          "id": "dataset_1",
+          "required": true,
+          "purpose": "Galería de imágenes o evidencias fotográficas del anexo.",
+          "source_key": "photo_evidence",
+          "shape": "image_items"
         }
       ],
       "required_datasets": [
-        "photo_evidence"
+        "dataset_1"
       ],
       "required_blocks": [
         "imagenes_1"
@@ -978,7 +997,7 @@
           "id": "tabla_1",
           "type": "table",
           "title": "Incidencias detectadas",
-          "dataset_id": "incidents",
+          "dataset_id": "dataset_1",
           "rows_path": "rows",
           "table_mode": "simple",
           "table_style": "compact",
@@ -1075,7 +1094,7 @@
           "title": "Resumen técnico",
           "prompt_id": "resumen_incidencias",
           "context_dataset_ids": [
-            "incidents"
+            "dataset_1"
           ],
           "include_document_context": true,
           "fallback_content": "No se ha generado resumen automático de incidencias."
@@ -1084,7 +1103,7 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Imágenes asociadas",
-          "dataset_id": "incident_evidence",
+          "dataset_id": "dataset_2",
           "items_path": "items",
           "layout": "grid",
           "items": [],
@@ -1104,16 +1123,22 @@
       ],
       "dataset_requirements": [
         {
-          "id": "incidents",
-          "required": true
+          "id": "dataset_1",
+          "required": true,
+          "purpose": "Listado principal de registros, incidencias o elementos detectados.",
+          "source_key": "incidents",
+          "shape": "table_rows"
         },
         {
-          "id": "incident_evidence",
-          "required": false
+          "id": "dataset_2",
+          "required": false,
+          "purpose": "Evidencias fotográficas asociadas a los registros del informe.",
+          "source_key": "incident_evidence",
+          "shape": "image_items"
         }
       ],
       "required_datasets": [
-        "incidents"
+        "dataset_1"
       ],
       "required_blocks": [
         "tabla_1"
@@ -1186,7 +1211,7 @@
           "id": "tabla_1",
           "type": "table",
           "title": "Indicadores del periodo",
-          "dataset_id": "period_indicators",
+          "dataset_id": "dataset_1",
           "rows_path": "rows",
           "table_mode": "simple",
           "table_style": "standard",
@@ -1256,7 +1281,7 @@
           "id": "tabla_2",
           "type": "table",
           "title": "Actuaciones e incidencias",
-          "dataset_id": "monthly_activity_incidents",
+          "dataset_id": "dataset_2",
           "rows_path": "rows",
           "table_mode": "simple",
           "table_style": "compact",
@@ -1338,8 +1363,8 @@
           "title": "Conclusión ejecutiva",
           "prompt_id": "conclusion_mensual",
           "context_dataset_ids": [
-            "period_indicators",
-            "monthly_activity_incidents"
+            "dataset_1",
+            "dataset_2"
           ],
           "include_document_context": true,
           "fallback_content": "No se ha generado conclusión automática para este periodo."
@@ -1348,7 +1373,7 @@
           "id": "imagenes_1",
           "type": "images",
           "title": "Anexos gráficos",
-          "dataset_id": "monthly_evidence",
+          "dataset_id": "dataset_3",
           "items_path": "items",
           "layout": "grid",
           "items": [],
@@ -1368,21 +1393,30 @@
       ],
       "dataset_requirements": [
         {
-          "id": "period_indicators",
-          "required": true
+          "id": "dataset_1",
+          "required": true,
+          "purpose": "Indicadores principales del periodo.",
+          "source_key": "period_indicators",
+          "shape": "table_rows"
         },
         {
-          "id": "monthly_activity_incidents",
-          "required": true
+          "id": "dataset_2",
+          "required": true,
+          "purpose": "Actividad, actuaciones o incidencias del periodo.",
+          "source_key": "monthly_activity_incidents",
+          "shape": "table_rows"
         },
         {
-          "id": "monthly_evidence",
-          "required": false
+          "id": "dataset_3",
+          "required": false,
+          "purpose": "Anexos gráficos o evidencias visuales del periodo.",
+          "source_key": "monthly_evidence",
+          "shape": "image_items"
         }
       ],
       "required_datasets": [
-        "period_indicators",
-        "monthly_activity_incidents"
+        "dataset_1",
+        "dataset_2"
       ],
       "required_blocks": [
         "tabla_1",
